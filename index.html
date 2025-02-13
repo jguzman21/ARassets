@@ -5,32 +5,50 @@
   </head>
   <body>
     <a-scene>
-      <!-- Lighting -->
+      <!-- Lighting for better visibility -->
       <a-light type="ambient" intensity="0.5"></a-light>
       <a-light type="directional" position="2 5 3" intensity="0.8"></a-light>
 
-      <!-- Ground (Grass) -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="green"></a-plane>
+      <!-- Ground -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#228B22"></a-plane>
 
-      <!-- Track (Using Boxes and Cylinders) -->
-      <!-- Straight Sections -->
-      <a-box position="0 0.1 4" width="10" height="0.2" depth="1.5" color="black" opacity="0.5" transparent="true"></a-box>
-      <a-box position="0 0.1 -4" width="10" height="0.2" depth="1.5" color="black" opacity="0.5" transparent="true"></a-box>
-      <a-box position="-6.5 0.1 0" width="1.5" height="0.2" depth="5" color="black" opacity="0.5" transparent="true"></a-box>
-      
-      <!-- Curved Sections -->
-      <a-cylinder position="-5 0.1 5" radius="1.5" height="0.2" theta-start="180" theta-length="90" rotation="0 0 0" color="black" opacity="0.5" transparent="true"></a-cylinder>
-      <a-cylinder position="5 0.1 -5" radius="1.5" height="0.2" theta-start="0" theta-length="90" rotation="0 0 0" color="black" opacity="0.5" transparent="true"></a-cylinder>
+      <!-- Outer Lane (Largest) -->
+      <a-torus position="0 0.1 0"
+        radius="5"
+        radius-tubular="0.2"
+        rotation="90 0 0"
+        material="color: #ADD8E6; opacity: 0.5; transparent: true">
+      </a-torus>
 
-      <!-- Lane Markers -->
-      <a-box position="0 0.15 4" width="0.1" height="0.02" depth="1.5" color="white" opacity="0.8" transparent="true"></a-box>
+      <!-- Middle Lane -->
+      <a-torus position="0 0.15 0"
+        radius="4.5"
+        radius-tubular="0.2"
+        rotation="90 0 0"
+        material="color: #ADD8E6; opacity: 0.5; transparent: true">
+      </a-torus>
+
+      <!-- Inner Lane -->
+      <a-torus position="0 0.2 0"
+        radius="4"
+        radius-tubular="0.2"
+        rotation="90 0 0"
+        material="color: #ADD8E6; opacity: 0.5; transparent: true">
+      </a-torus>
+
+      <!-- Start/Finish Line (Optional) -->
+      <a-box position="0 0.11 4.5"
+        width="1"
+        height="0.02"
+        depth="0.5"
+        material="color: white; opacity: 0.8; transparent: true">
+      </a-box>
 
       <!-- Camera -->
-      <a-camera position="0 8 10" rotation="-90 0 0">
+      <a-camera position="0 3 7">
         <a-cursor></a-cursor>
       </a-camera>
     </a-scene>
   </body>
 </html>
-
 
