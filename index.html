@@ -12,7 +12,10 @@
         material="color: blue; opacity: 0.2; transparent: true">
       </a-box>
 
-      <a-entity id="track" gltf-model="racing_track.gltf" position="0 0 0" scale="10 10 10"></a-entity>
+      <a-assets>
+        <a-asset-item id="track" src="racing_track.gltf"></a-asset-item>
+      </a-assets>
+      <a-entity gltf-model="#track"></a-entity>
 
       <a-camera position="0 5 10">
         <a-cursor></a-cursor>
