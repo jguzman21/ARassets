@@ -6,7 +6,7 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene embedded arjs>
       <!-- Preload the racetrack model -->
       <a-assets>
         <a-asset-item id="track" src="racing_track.gltf"></a-asset-item>
@@ -29,6 +29,7 @@
 
       <!-- Insert the racetrack model -->
       <a-entity
+        id="racetrack"
         gltf-model="#track"
         position="0 0 0"
         rotation="0 0 0"
@@ -40,6 +41,19 @@
         <a-cursor></a-cursor>
       </a-camera>
     </a-scene>
+
+    <script>
+      AFRAME.scenes[0].addEventListener("enter-vr", function () {
+        if (AFRAME.utils.device.isARCapable()) {
+          document.querySelector("#racetrack").setAttribute("scale", "0.3 0.3 0.3");
+        }
+      });
+
+      AFRAME.scenes[0].addEventListener("exit-vr", function () {
+        document.querySelector("#racetrack").setAttribute("scale", "1 1 1");
+      });
+    </script>
   </body>
 </html>
+
 
