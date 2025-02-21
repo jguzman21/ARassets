@@ -14,10 +14,9 @@
 
       /* VR button - Centered */
       .a-enter-vr {
-        left: 45% !important;
+        left: 50% !important;
       }
 
-      /* AR button - More to the left */
       .a-enter-ar {
         left: 35% !important;
       }
@@ -70,7 +69,7 @@
 
       AFRAME.scenes[0].addEventListener("enter-ar", function () {
         if (AFRAME.utils.device.isARCapable()) {
-          document.querySelector("#racetrack").setAttribute("scale", "0.3 0.3 0.3");
+          document.querySelector("#racetrack").setAttribute("scale", "0 0 0");
         }
       });
 
