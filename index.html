@@ -14,7 +14,7 @@
       .a-enter-ar {
         position: fixed !important;
         bottom: 20px !important;
-        left: 50% !important;
+        left: 20% !important;
         transform: translateX(-50%) !important;
       }
     </style>
@@ -57,13 +57,13 @@
     </a-scene>
 
     <script>
-      AFRAME.scenes[0].addEventListener("enter-vr", function () {
+      AFRAME.scenes[0].addEventListener("enter-ar", function () {
         if (AFRAME.utils.device.isARCapable()) {
           document.querySelector("#racetrack").setAttribute("scale", "0.3 0.3 0.3");
         }
       });
 
-      AFRAME.scenes[0].addEventListener("exit-vr", function () {
+      AFRAME.scenes[0].addEventListener("exit-ar", function () {
         document.querySelector("#racetrack").setAttribute("scale", "1 1 1");
       });
     </script>
