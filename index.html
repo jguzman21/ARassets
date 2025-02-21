@@ -4,6 +4,14 @@
     <meta charset="utf-8" />
     <title>AR Racetrack in A-Frame</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+      .a-enter-vr {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
+    </style>
   </head>
   <body>
     <a-scene embedded arjs>
