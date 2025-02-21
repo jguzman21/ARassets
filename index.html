@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>AR Racetrack in A-Frame</title>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
       /* General button styling */
       .a-enter-vr, .a-enter-ar {
@@ -34,15 +34,13 @@
       <a-light type="directional" position="2 5 3" intensity="0.8"></a-light>
 
       <!-- Insert the racetrack model -->
-      <a-marker type="pattern" url="track.patt">
-        <a-entity
-          id="racetrack"
-          gltf-model="#track"
-          position="0 0.05 -1.5"
-          rotation="0 90 0"
-          scale="0.5 0.5 0.5"
-        ></a-entity>
-      </a-marker>
+      <a-entity
+        id="racetrack"
+        gltf-model="#track"
+        position="0 0.05 -1.5" 
+        rotation="0 90 0"   
+        scale="0.5 0.5 0.5"
+      ></a-entity>
 
       <!-- Camera with cursor -->
       <a-camera position="0 5 15">
