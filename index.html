@@ -5,14 +5,12 @@
     <title>AR Racetrack in A-Frame</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
-      /* General button styling */
       .a-enter-vr, .a-enter-ar {
         position: fixed !important;
         bottom: 20px !important;
         transform: translateX(-50%) !important;
       }
 
-      /* VR button - Centered */
       .a-enter-vr {
         left: 50% !important;
       }
@@ -24,16 +22,13 @@
   </head>
   <body>
     <a-scene embedded arjs>
-      <!-- Preload the racetrack model -->
       <a-assets>
         <a-asset-item id="track" src="racing_track.gltf"></a-asset-item>
       </a-assets>
 
-      <!-- Lighting -->
       <a-light type="ambient" intensity="0.5"></a-light>
       <a-light type="directional" position="2 5 3" intensity="0.8"></a-light>
 
-      <!-- Insert the racetrack model -->
       <a-entity
         id="racetrack"
         gltf-model="#track"
@@ -42,18 +37,16 @@
         scale="0.5 0.5 0.5"
       ></a-entity>
 
-      <!-- Camera with cursor -->
       <a-camera position="0 5 15">
         <a-cursor></a-cursor>
       </a-camera>
     </a-scene>
 
     <script>
-      // Adjust AR button when detected
       document.addEventListener("DOMContentLoaded", function () {
         let arButton = document.querySelector(".a-enter-vr");
         if (arButton) {
-          arButton.classList.add("a-enter-ar"); // Assign AR class for styling
+          arButton.classList.add("a-enter-ar"); 
         }
       });
 
