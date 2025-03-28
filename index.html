@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <title>AR Racetrack in A-Frame</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
     <style>
+      /* General button styling */
       .a-enter-vr, .a-enter-ar {
         position: fixed !important;
         bottom: 20px !important;
         transform: translateX(-50%) !important;
       }
 
+      /* VR button - Centered */
       .a-enter-vr {
         left: 50% !important;
       }
@@ -23,64 +24,47 @@
   </head>
   <body>
     <a-scene embedded arjs>
+      <!-- Preload the racetrack model -->
       <a-assets>
         <a-asset-item id="track" src="racing_track.gltf"></a-asset-item>
       </a-assets>
 
+      <!-- Lighting -->
       <a-light type="ambient" intensity="0.5"></a-light>
       <a-light type="directional" position="2 5 3" intensity="0.8"></a-light>
 
-      <!-- Define 4 ArUco marker trackers -->
-      <a-marker id="marker0" type="barcode" value="0"></a-marker>
-      <a-marker id="marker1" type="barcode" value="1"></a-marker>
-      <a-marker id="marker2" type="barcode" value="2"></a-marker>
-      <a-marker id="marker3" type="barcode" value="3"></a-marker>
+      <!-- Insert the racetrack model -->
+      <a-entity
+        id="racetrack"
+        gltf-model="#track"
+        position="0 0.05 -1.5" 
+        rotation="0 90 0"   
+        scale="0.5 0.5 0.5"
+      ></a-entity>
 
-      <!-- Racetrack that will be dynamically positioned -->
-      <a-entity id="racetrack" gltf-model="#track" scale="0.5 0.5 0.5"></a-entity>
-
-      <a-camera position="0 0 0"></a-camera>
+      <!-- Camera with cursor -->
+      <a-camera position="0 5 15">
+        <a-cursor></a-cursor>
+      </a-camera>
     </a-scene>
 
     <script>
+      // Adjust AR button when detected
       document.addEventListener("DOMContentLoaded", function () {
-        let markers = {
-          0: null,
-          1: null,
-          2: null,
-          3: null
-        };
-
-        function updateTrackPosition() {
-          let markerPositions = Object.values(markers).filter(pos => pos !== null);
-          
-          if (markerPositions.length === 4) {
-            let avgX = markerPositions.reduce((sum, p) => sum + p.x, 0) / 4;
-            let avgY = markerPositions.reduce((sum, p) => sum + p.y, 0) / 4;
-            let avgZ = markerPositions.reduce((sum, p) => sum + p.z, 0) / 4;
-
-            let racetrack = document.querySelector("#racetrack");
-            racetrack.setAttribute("position", `${avgX} ${avgY} ${avgZ}`);
-          }
+        let arButton = document.querySelector(".a-enter-vr");
+        if (arButton) {
+          arButton.classList.add("a-enter-ar"); // Assign AR class for styling
         }
+      });
 
-        function setupMarkerListener(markerId) {
-          let marker = document.querySelector(`#marker${markerId}`);
-          marker.addEventListener("markerFound", function () {
-            let position = marker.object3D.position;
-            markers[markerId] = { x: position.x, y: position.y, z: position.z };
-            updateTrackPosition();
-          });
-
-          marker.addEventListener("markerLost", function () {
-            markers[markerId] = null;
-          });
+      AFRAME.scenes[0].addEventListener("enter-ar", function () {
+        if (AFRAME.utils.device.isARCapable()) {
+          document.querySelector("#racetrack").setAttribute("scale", "0.3 0.3 0.3");
         }
+      });
 
-        setupMarkerListener(0);
-        setupMarkerListener(1);
-        setupMarkerListener(2);
-        setupMarkerListener(3);
+      AFRAME.scenes[0].addEventListener("exit-ar", function () {
+        document.querySelector("#racetrack").setAttribute("scale", "1 1 1");
       });
     </script>
   </body>
