@@ -2,21 +2,47 @@
 <html>
   <head>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/dev/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
   </head>
   <body style="margin: 0px; overflow: hidden;">
     <a-scene embedded arjs>
       
-      <a-marker type="pattern" url="markers/pattern-marker_0.patt">
+      <!-- Hidden container for stationary track -->
+      <a-entity id="track-container" visible="false">
         <a-gltf-model
           src="racing_track.gltf"
-          scale="1 1 1"
+          scale="1.5 1.5 1.5"
           position="0 0.05 -1.5"
           rotation="0 90 0">
         </a-gltf-model>
-      </a-marker>
+      </a-entity>
+
+      <!-- Marker (used only to spawn track once) -->
+      <a-marker id="marker0" type="pattern" url="markers/pattern-marker_0.patt"></a-marker>
 
       <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+      const marker = document.querySelector("#marker0");
+      const track = document.querySelector("#track-container");
+
+      let placed = false;
+
+      marker.addEventListener("markerFound", () => {
+        if (placed) return;
+
+        // Get marker position and rotation in world space
+        const position = marker.object3D.getWorldPosition(new THREE.Vector3());
+        const rotation = marker.object3D.getWorldRotation(new THREE.Euler());
+
+        // Place the track there
+        track.object3D.position.copy(position);
+        track.object3D.rotation.copy(rotation);
+        track.setAttribute("visible", "true");
+
+        placed = true; // Prevent it from being placed again
+      });
+    </script>
   </body>
 </html>
