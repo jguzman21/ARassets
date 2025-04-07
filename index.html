@@ -6,11 +6,18 @@
   </head>
   <body style="margin: 0px; overflow: hidden;">
     <a-scene embedded arjs>
+      
+      <!-- Marker 0 with GLTF model -->
       <a-marker type="pattern" url="markers/pattern-marker_0.patt">
-        <a-box position="0 0.5 0" material="color: red;"></a-box>
+        <a-gltf-model
+          src="racing_track.gltf"
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
+          rotation="0 180 0">
+        </a-gltf-model>
       </a-marker>
+
       <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
-
