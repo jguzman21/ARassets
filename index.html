@@ -1,48 +1,151 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <meta charset="utf-8" />
+    <title>AR Racetrack with Object Mapping</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <!-- Include AR.js for AR functionality -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      .a-enter-vr,
+      .a-enter-ar {
+        position: fixed !important;
+        bottom: 20px !important;
+        transform: translateX(-50%) !important;
+      }
+      .a-enter-vr {
+        left: 50% !important;
+      }
+      .a-enter-ar {
+        left: 35% !important;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body>
     <a-scene embedded arjs>
-      
-      <a-marker id="marker0" type="pattern" url="marker1.patt"></a-marker>
+      <a-assets>
+        <a-asset-item id="track" src="racing_track.gltf"></a-asset-item>
+      </a-assets>
 
-      <a-marker id="marker1" type="pattern" url="marker2.patt"></a-marker>
+      <!-- Lighting -->
+      <a-light type="ambient" intensity="0.5"></a-light>
+      <a-light type="directional" position="2 5 3" intensity="0.8"></a-light>
 
-      <a-marker id="marker2" type="pattern" url="marker3.patt"></a-marker>
+      <!-- Four markers (one per corner of the box) -->
+      <a-marker
+        preset="custom"
+        type="pattern"
+        url="markers/marker1.patt"
+        id="marker1"
+      ></a-marker>
+      <a-marker
+        preset="custom"
+        type="pattern"
+        url="markers/marker2.patt"
+        id="marker2"
+      ></a-marker>
+      <a-marker
+        preset="custom"
+        type="pattern"
+        url="markers/marker3.patt"
+        id="marker3"
+      ></a-marker>
+      <a-marker
+        preset="custom"
+        type="pattern"
+        url="markers/marker4.patt"
+        id="marker4"
+      ></a-marker>
 
-      <a-entity id="generated-object" visible="false">
-        <a-box position="0 0.5 0" color="hotpink"></a-box>
+      <!-- Parent entity for the AR asset; its transform will be updated -->
+      <a-entity id="boxAnchor">
+        <a-entity
+          id="arAsset"
+          gltf-model="#track"
+          position="0 0.05 -1.5"
+          rotation="0 90 0"
+          scale="0.5 0.5 0.5"
+        ></a-entity>
       </a-entity>
 
-      <a-entity camera></a-entity>
+      <!-- Camera with a cursor -->
+      <a-entity camera>
+        <a-cursor></a-cursor>
+      </a-entity>
     </a-scene>
 
     <script>
-      const markers = ['marker0', 'marker1', 'marker2'];
-      const visibility = {
-        marker0: false,
-        marker1: false,
-        marker2: false
-      };
+      // Apply AR button styling once the DOM is fully loaded.
+      document.addEventListener("DOMContentLoaded", function () {
+        let arButton = document.querySelector(".a-enter-vr");
+        if (arButton) {
+          arButton.classList.add("a-enter-ar");
+        }
+      });
 
-      const object = document.getElementById("generated-object");
+      // Scale adjustments for AR mode.
+      document
+        .querySelector("a-scene")
+        .addEventListener("enter-ar", function () {
+          if (AFRAME.utils.device.isARCapable()) {
+            document
+              .querySelector("#arAsset")
+              .setAttribute("scale", "0.3 0.3 0.3");
+          }
+        });
+      document
+        .querySelector("a-scene")
+        .addEventListener("exit-ar", function () {
+          document.querySelector("#arAsset").setAttribute("scale", "1 1 1");
+        });
 
-      function checkAllVisible() {
-        const allVisible = markers.every(id => visibility[id]);
-        object.setAttribute('visible', allVisible);
+      // Object to store the world matrices of detected markers.
+      let markerTransforms = {};
+
+      // Function to update the boxAnchor's transformation based on visible markers.
+      function updateBoxAnchor() {
+        const markerIds = Object.keys(markerTransforms);
+        if (markerIds.length === 0) return; // No markers detected.
+
+        let avgPosition = new THREE.Vector3();
+        let avgQuaternion = new THREE.Quaternion();
+        let first = true;
+
+        markerIds.forEach((id) => {
+          let mat = markerTransforms[id];
+          let pos = new THREE.Vector3();
+          let quat = new THREE.Quaternion();
+          let scale = new THREE.Vector3();
+          mat.decompose(pos, quat, scale);
+
+          avgPosition.add(pos);
+          if (first) {
+            avgQuaternion.copy(quat);
+            first = false;
+          } else {
+            // Using slerp to blend rotations.
+            avgQuaternion.slerp(quat, 1 / markerIds.length);
+          }
+        });
+
+        avgPosition.multiplyScalar(1 / markerIds.length);
+
+        // Update the container's position and orientation.
+        const boxAnchor = document.querySelector("#boxAnchor").object3D;
+        boxAnchor.position.copy(avgPosition);
+        boxAnchor.quaternion.copy(avgQuaternion);
       }
 
-      markers.forEach(id => {
-        const el = document.getElementById(id);
-        el.addEventListener('markerFound', () => {
-          visibility[id] = true;
-          checkAllVisible();
+      // Add event listeners to update transforms when markers are found or lost.
+      document.querySelectorAll("a-marker").forEach((marker) => {
+        marker.addEventListener("markerFound", function () {
+          // Store the marker's current world matrix.
+          markerTransforms[marker.id] = marker.object3D.matrixWorld.clone();
+          updateBoxAnchor();
         });
-        el.addEventListener('markerLost', () => {
-          visibility[id] = false;
-          checkAllVisible();
+        marker.addEventListener("markerLost", function () {
+          delete markerTransforms[marker.id];
+          updateBoxAnchor();
         });
       });
     </script>
