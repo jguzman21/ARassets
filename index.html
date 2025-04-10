@@ -7,36 +7,35 @@
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
       
-      <!-- Define the marker -->
+      <!-- Marker that triggers model placement -->
       <a-marker id="marker" type="pattern" url="markers/pattern-marker_0.patt"></a-marker>
 
-      <!-- Define the model OUTSIDE the marker -->
-      <a-gltf-model
-        id="racetrack"
-        src="racing_track.gltf"
-        scale="0.5 0.5 0.5"
-        rotation="90 45 0"
-        visible="false">
-      </a-gltf-model>
+      <!-- Parent entity to handle flat placement -->
+      <a-entity id="model-wrapper" rotation="90 0 0" visible="false">
+        <!-- Child handles the clockwise turn -->
+        <a-gltf-model
+          id="racetrack"
+          src="racing_track.gltf"
+          scale="0.5 0.5 0.5"
+          rotation="0 0 90">
+        </a-gltf-model>
+      </a-entity>
 
       <a-entity camera></a-entity>
     </a-scene>
 
     <script>
       const marker = document.querySelector("#marker");
-      const model = document.querySelector("#racetrack");
+      const wrapper = document.querySelector("#model-wrapper");
 
       let modelPlaced = false;
 
       marker.addEventListener("markerFound", () => {
         if (!modelPlaced) {
           const markerPosition = marker.object3D.position.clone();
-          const markerRotation = marker.object3D.rotation.clone();
 
-          // Set position and rotation once
-          model.setAttribute("position", markerPosition);
-          model.setAttribute("rotation", { x: 90, y: 45, z: 0 });  // fixed rotation
-          model.setAttribute("visible", true);
+          wrapper.setAttribute("position", markerPosition);
+          wrapper.setAttribute("visible", true);
 
           modelPlaced = true;
         }
