@@ -7,6 +7,7 @@
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam; trackingMethod: best;">
       
+      <!-- Marker with racetrack and D-pad -->
       <a-marker
         type="pattern"
         url="markers/pattern-marker_0.patt"
@@ -15,6 +16,7 @@
         smoothTolerance="0.01"
         smoothThreshold="2">
         
+        <!-- Racetrack -->
         <a-gltf-model
           src="racing_track.gltf"
           scale="1.5 1.5 1.5"
@@ -22,28 +24,42 @@
           rotation="0 90 0">
         </a-gltf-model>
 
-        <a-entity id="dpad" position="0 -3.5 0">
-
-          <a-plane position="0 0.3 0" width="0.3" height="0.3" color="#666">
-            <a-text value="↑" align="center" position="0 0 0.01"></a-text>
+        <!-- D-pad positioned on track -->
+        <a-entity id="dpad" position="0 -3.9 -0.5" rotation="-90 0 0">
+          <!-- Up -->
+          <a-plane class="clickable" id="btn-up" position="0 0.3 0" width="0.3" height="0.3" color="#666">
+            <a-text value="↑" align="center" position="0 0 0.01" color="#FFF"></a-text>
           </a-plane>
-
-          <a-plane position="0 -0.3 0" width="0.3" height="0.3" color="#666">
-            <a-text value="↓" align="center" position="0 0 0.01"></a-text>
+          <!-- Down -->
+          <a-plane class="clickable" id="btn-down" position="0 -0.3 0" width="0.3" height="0.3" color="#666">
+            <a-text value="↓" align="center" position="0 0 0.01" color="#FFF"></a-text>
           </a-plane>
-
-          <a-plane position="-0.3 0 0" width="0.3" height="0.3" color="#666">
-            <a-text value="←" align="center" position="0 0 0.01"></a-text>
+          <!-- Left -->
+          <a-plane class="clickable" id="btn-left" position="-0.3 0 0" width="0.3" height="0.3" color="#666">
+            <a-text value="←" align="center" position="0 0 0.01" color="#FFF"></a-text>
           </a-plane>
-
-          <a-plane position="0.3 0 0" width="0.3" height="0.3" color="#666">
-            <a-text value="→" align="center" position="0 0 0.01"></a-text>
+          <!-- Right -->
+          <a-plane class="clickable" id="btn-right" position="0.3 0 0" width="0.3" height="0.3" color="#666">
+            <a-text value="→" align="center" position="0 0 0.01" color="#FFF"></a-text>
           </a-plane>
-
         </a-entity>
+
       </a-marker>
 
-      <a-entity camera></a-entity>
+      <!-- Camera with cursor for interaction -->
+      <a-entity camera>
+        <a-cursor></a-cursor>
+      </a-entity>
     </a-scene>
+
+    <!-- Placeholder click events -->
+    <script>
+      const btns = ['btn-up', 'btn-down', 'btn-left', 'btn-right'];
+      btns.forEach(id => {
+        document.querySelector(`#${id}`).addEventListener('click', () => {
+          // No action for now — just clickable
+        });
+      });
+    </script>
   </body>
 </html>
