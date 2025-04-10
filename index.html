@@ -42,13 +42,13 @@
 
       .d-pad {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
         display: none;
         flex-direction: column;
         align-items: center;
         gap: 10px;
-        z-index: 20;
       }
 
       .d-row {
@@ -76,11 +76,11 @@
 
       #stopButton {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        margin-top: 160px;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
         display: none;
-        background-color: red;
+        background-color: rgba(255, 255, 255, 0.6);
         color: white;
         border: none;
         border-radius: 10px;
@@ -88,7 +88,6 @@
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        z-index: 20;
       }
 
       #stopButton:active {
@@ -109,7 +108,7 @@
         <a-gltf-model
           src="racing_track.gltf"
           scale="1.5 1.5 1.5"
-          position="0 -5 -0.5"
+          position="0 -10 -0.5"
           rotation="0 90 0">
         </a-gltf-model>
       </a-marker>
@@ -123,10 +122,11 @@
         </div>
       </div>
 
+      <button id="stopButton">Stop</button>
+
       <a-entity camera></a-entity>
     </a-scene>
 
-    <button id="stopButton">Stop</button>
 
     <script>
       const marker = document.querySelector("#marker");
