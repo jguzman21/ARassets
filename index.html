@@ -15,7 +15,7 @@
         id="racetrack"
         src="racing_track.gltf"
         scale="1 1 1"
-        rotation="90 0 0"
+        rotation="90 180 180"
         visible="false">
       </a-gltf-model>
 
@@ -35,7 +35,7 @@
 
           // Set position and rotation once
           model.setAttribute("position", markerPosition);
-          model.setAttribute("rotation", { x: 90, y: 0, z: 0 });  // fixed rotation
+          model.setAttribute("rotation", { x: 90, y: 180, z: 180 });  // fixed rotation
           model.setAttribute("visible", true);
 
           modelPlaced = true;
