@@ -40,13 +40,12 @@
         z-index: 10;
       }
 
-      /* D-Pad Styling */
       .d-pad {
         position: absolute;
-        bottom: 20px;
+        bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        display: none; /* Hide initially */
+        display: none;
         flex-direction: column;
         align-items: center;
         gap: 10px;
@@ -74,12 +73,30 @@
       .d-button:active {
         background-color: rgba(255, 255, 255, 0.9);
       }
+
+      #stopButton {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      #stopButton:active {
+        background-color: darkred;
+      }
     </style>
   </head>
   <body style="margin: 0; overflow: hidden;">
-    <!-- AR Scene with Camera Feed -->
     <a-scene embedded arjs="sourceType: webcam; trackingMethod: best;">
-      <!-- Add a marker for AR -->
       <a-marker
         id="marker"
         type="pattern"
@@ -88,45 +105,41 @@
         smoothCount="10"
         smoothTolerance="0.01"
         smoothThreshold="2">
-        
         <a-gltf-model
           src="racing_track.gltf"
           scale="1.5 1.5 1.5"
-          position="0 -4 -0.5"
+          position="0 -10 -0.5"
           rotation="0 90 0">
         </a-gltf-model>
       </a-marker>
 
-      <!-- D-Pad Control -->
-        <div class="d-pad" id="dPad">
-          <div class="d-button">⬆</div>
-          <div class="d-row">
+      <div class="d-pad" id="dPad">
+        <div class="d-button">⬆</div>
+        <div class="d-row">
           <div class="d-button">⬅</div>
           <div class="d-button">⬇</div>
           <div class="d-button">➡</div>
         </div>
       </div>
 
-      <!-- Camera entity -->
       <a-entity camera></a-entity>
-
     </a-scene>
 
+    <button id="stopButton">Stop</button>
 
     <script>
-      // Get marker and D-pad element
       const marker = document.querySelector("#marker");
       const dPad = document.querySelector("#dPad");
+      const stopButton = document.querySelector("#stopButton");
 
-      // Listen for marker detection event
       marker.addEventListener("markerFound", function() {
-        // Show D-pad when the marker is detected
         dPad.style.display = "flex";
+        stopButton.style.display = "block";
       });
 
-      // Listen for marker lost event
       marker.addEventListener("markerLost", function() {
         dPad.style.display = "none";
+        stopButton.style.display = "none";
       });
     </script>
   </body>
