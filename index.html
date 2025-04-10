@@ -22,37 +22,9 @@
           rotation="0 90 0">
         </a-gltf-model>
 
-        <a-entity id="dpad" position="0 -3.9 -0.5" rotation="0 90 0">
-        
-          <a-plane class="clickable" id="btn-up" position="0 0.3 0" width="0.3" height="0.3" color="#666">
-            <a-text value="↑" align="center" position="0 0 0.01" color="#FFF"></a-text>
-          </a-plane>
-  
-          <a-plane class="clickable" id="btn-down" position="0 -0.3 0" width="0.3" height="0.3" color="#666">
-            <a-text value="↓" align="center" position="0 0 0.01" color="#FFF"></a-text>
-          </a-plane>
-          <a-plane class="clickable" id="btn-left" position="-0.3 0 0" width="0.3" height="0.3" color="#666">
-            <a-text value="←" align="center" position="0 0 0.01" color="#FFF"></a-text>
-          </a-plane>
-    
-          <a-plane class="clickable" id="btn-right" position="0.3 0 0" width="0.3" height="0.3" color="#666">
-            <a-text value="→" align="center" position="0 0 0.01" color="#FFF"></a-text>
-          </a-plane>
-        </a-entity>
-
       </a-marker>
 
-      <a-entity camera>
-        <a-cursor></a-cursor>
-      </a-entity>
+      <a-entity camera></a-entity>
     </a-scene>
-
-    <script>
-      const btns = ['btn-up', 'btn-down', 'btn-left', 'btn-right'];
-      btns.forEach(id => {
-        document.querySelector(`#${id}`).addEventListener('click', () => {
-        });
-      });
-    </script>
   </body>
 </html>
