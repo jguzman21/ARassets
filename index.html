@@ -29,10 +29,11 @@
       marker.addEventListener("markerFound", () => {
         if (!modelPlaced) {
           const markerPosition = marker.object3D.position.clone();
-          const markerRotation = marker.object3D.rotation.clone();
+
+          markerPosition.x -= 0.2;
 
           model.setAttribute("position", markerPosition);
-          model.setAttribute("rotation", { x: 90, y: 0, z: 0 });  
+          model.setAttribute("rotation", { x: 90, y: 0, z: 0 });
           model.setAttribute("visible", true);
 
           modelPlaced = true;
