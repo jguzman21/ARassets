@@ -14,7 +14,6 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background-color: black;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -99,14 +98,14 @@
       </a-marker>
 
       <!-- D-Pad Control -->
-    <div class="d-pad" id="dPad">
-      <div class="d-button">⬆</div>
-      <div class="d-row">
-        <div class="d-button">⬅</div>
-        <div class="d-button">⬇</div>
-        <div class="d-button">➡</div>
+        <div class="d-pad" id="dPad">
+          <div class="d-button">⬆</div>
+          <div class="d-row">
+          <div class="d-button">⬅</div>
+          <div class="d-button">⬇</div>
+          <div class="d-button">➡</div>
+        </div>
       </div>
-    </div>
 
       <!-- Camera entity -->
       <a-entity camera></a-entity>
@@ -127,7 +126,6 @@
 
       // Listen for marker lost event
       marker.addEventListener("markerLost", function() {
-        // Hide D-pad when the marker is lost
         dPad.style.display = "none";
       });
     </script>
